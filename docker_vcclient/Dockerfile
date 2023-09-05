@@ -7,7 +7,7 @@ RUN apt-get update \
         && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
-ADD dummy /
+# ADD dummy /
 
 RUN git clone https://github.com/w-okada/voice-changer.git -b v.1.5.3.12
 
@@ -34,8 +34,8 @@ RUN pip install numpy==1.23.5 \
 # RUN git clone https://github.com/liujing04/Retrieval-based-Voice-Conversion-WebUI.git RVC
 # RUN cd RVC && git checkout 563c64ded9925085f547b13ecafb8eb9c182952b && cd -
 
-ADD /setup.sh  /voice-changer/server
-ADD /exec.sh  /voice-changer/server
+# ADD /setup.sh  /voice-changer/server
+# ADD /exec.sh  /voice-changer/server
 
 
-ENTRYPOINT ["/bin/bash", "setup.sh"]
+# ENTRYPOINT ["/bin/bash", "setup.sh"]

@@ -8,10 +8,12 @@ DOCKER_IMAGE=dannadori/vcclient:20230710_031922
 DEFAULT_EX_PORT=18888
 DEFAULT_USE_GPU=on # on|off
 DEFAULT_USE_LOCAL=off # on|off
+DEFAULT_GPU_NUM="device=0,1"
 ### ENV VAR ###
 EX_PORT=${EX_PORT:-${DEFAULT_EX_PORT}}
 USE_GPU=${USE_GPU:-${DEFAULT_USE_GPU}}
 USE_LOCAL=${USE_LOCAL:-${DEFAULT_USE_LOCAL}}
+GPU_NUM=${GPU_NUM:-${DEFAULT_GPU_NUM}}
 
 if [ "${USE_LOCAL}" = "on" ]; then
     DOCKER_IMAGE=vcclient
@@ -19,7 +21,8 @@ fi
 
 if [ "${USE_GPU}" = "on" ]; then
     echo "VC Client start...(with gpu)"
-    docker run -it --rm --gpus all --shm-size=1024M \
+    # 백그라운드 실행
+    docker run -d -it --rm --gpus "$GPU_NUM" --shm-size=1024M \
     -e EX_IP="`hostname -I`" \
     -e EX_PORT=${EX_PORT} \
     -e LOCAL_UID=$(id -u $USER) \
@@ -40,7 +43,7 @@ if [ "${USE_GPU}" = "on" ]; then
         --samples samples.json
 else
     echo "VC Client start...(cpu)"
-    docker run -it --rm --shm-size=1024M \
+    docker run -d -it --rm --shm-size=1024M \
     -e EX_IP="`hostname -I`" \
     -e EX_PORT=${EX_PORT} \
     -e LOCAL_UID=$(id -u $USER) \
